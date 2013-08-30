@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol XMLReaderDelegate
-- (void) foundXMLElement: (NSObject*)sourceXmlReader:(NSString*)sElementName:(NSMutableString*)sValue;
+- (void) foundXMLElement: (NSObject*)sourceXmlReader element:(NSString*)sElementName value:(NSMutableString*)sValue;
 //- (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error;
 @end
 
@@ -30,5 +30,5 @@
 @property (nonatomic, retain) NSMutableString *soapResults;
 @property (nonatomic, retain) NSMutableArray *aElementsToFind;
 
-- (void) parseForElements:(NSMutableArray*)aElements:(NSData*)data;
+- (void) parseForElements:(NSMutableArray*)aElements data:(NSData*)data;
 @end

@@ -101,7 +101,7 @@
     
     [actMain stopAnimating];
     
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @""): [error description]];    
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") message:[error description]];
     /*UIAlertView *alert = [[UIAlertView alloc] 
                           initWithTitle:@"Connection Error!"
                           message:[NSString stringWithFormat:@"%@", [error description]] 
@@ -142,9 +142,9 @@
     xmlReader = [[XMLReader alloc] init];
     xmlReader.delegate = self;
     
-    [xmlReader parseForElements:aElementsToFind:srTimePerDay.webData];    
+    [xmlReader parseForElements:aElementsToFind data:srTimePerDay.webData];
     if (bErrorSessionId) {
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         [actMain stopAnimating];  
         return;
     }
@@ -221,7 +221,7 @@
     
     srTimePerDay = [[SOAPRequester alloc] init];
     srTimePerDay.delegate = self;
-    [srTimePerDay sendSOAPRequest:cfgMgr:@"GetWorkStartEnd":mutable];
+    [srTimePerDay sendSOAPRequest:cfgMgr message:@"GetWorkStartEnd" od:mutable];
 }
 
 

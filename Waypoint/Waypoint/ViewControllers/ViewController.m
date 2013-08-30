@@ -141,11 +141,11 @@
             if(la.nResult == 0 | la.nResult == 1){
                 // Bad Mandate / User / Password
                 [self abortLoginProcess];
-                [CommonFunctions showMessageBox:NSLocalizedString(@"titLoginError", @""): NSLocalizedString(@"msgLoginErrorMandateUserPwd", @"")];
+                [CommonFunctions showMessageBox:NSLocalizedString(@"titLoginError", @"") message: NSLocalizedString(@"msgLoginErrorMandateUserPwd", @"")];
             }else if(la.nResult == 2){
                 // Bad app version            
                 [self abortLoginProcess]; 
-                [CommonFunctions showMessageBox:NSLocalizedString(@"titLoginError", @""): NSLocalizedString(@"msgLoginErrorAppVersion", @"")];
+                [CommonFunctions showMessageBox:NSLocalizedString(@"titLoginError", @"") message: NSLocalizedString(@"msgLoginErrorAppVersion", @"")];
             }else if(la.nResult == 5){
                 // Everything OK
                 [self saveConfig];
@@ -158,7 +158,7 @@
                 
                 srConfig = [[SOAPRequester alloc] init];
                 srConfig.delegate = self;
-                [srConfig sendSOAPRequest:cfgTmp:@"GetProjectsForUser":mutable];
+                [srConfig sendSOAPRequest:cfgTmp message:@"GetProjectsForUser" od:mutable];
                 
             }
         }else if ([sElementName isEqualToString:@"idproject"])
@@ -206,6 +206,7 @@
     tbiMembership.enabled = YES;
     tbiConfig.enabled = YES;
     bbiLogin.enabled = YES;
+    tbvLogin.userInteractionEnabled = true;
     [actMain stopAnimating];    
 }
 
@@ -213,7 +214,7 @@
 - (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error{
 
     [self abortLoginProcess];
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @""): [error description]];
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") message: [error description]];
 }
 
 - (void) gotSOAPAnswere:(NSObject*)requester:(NSString*)sXMLAnswere:(NSData*)data{
@@ -235,7 +236,7 @@
         [aElementsToFind addObject:@"idproject"];        
         [aElementsToFind addObject:@"idworkcode"];                
         
-        [xmlReaderWP parseForElements:aElementsToFind:srConfigWaypoints.webData];
+        [xmlReaderWP parseForElements:aElementsToFind data:srConfigWaypoints.webData];
         if (!bErrorSessionID) {
             TimeSheetViewController *myNewVC = [[TimeSheetViewController alloc] init];
              myNewVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -243,7 +244,7 @@
              myNewVC.la = la;
              [self presentModalViewController:myNewVC animated:YES];
         }else {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         }
         [self abortLoginProcess];        
     }else if(requester == srConfigClients){
@@ -255,7 +256,7 @@
         [aElementsToFind addObject:@"idproject"];
         [aElementsToFind addObject:@"project"];
         
-        [xmlReaderConfig parseForElements:aElementsToFind:srConfigClients.webData];
+        [xmlReaderConfig parseForElements:aElementsToFind data:srConfigClients.webData];
         //ClientEntry *clientEntry = ((ClientEntry*)[cfgMgr.aClients objectAtIndex:1]);
         
         //ClientEntry *tmp = (ClientEntry*)[cfgMgr.aClients objectAtIndex:cfgMgr.aClients.count-1];
@@ -272,11 +273,11 @@
             
             srConfigWaypoints = [[SOAPRequester alloc] init];
             srConfigWaypoints.delegate = self;
-            [srConfigWaypoints sendSOAPRequest:cfgTmp:@"GetWaypointsForUser":mutable];
+            [srConfigWaypoints sendSOAPRequest:cfgTmp message:@"GetWaypointsForUser" od:mutable];
             
         }else {
             //[CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @""): @"Error sessionid (login again)!"];
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
             [self abortLoginProcess];
         }
     }else if(requester == srConfigWorkcodes){
@@ -284,7 +285,7 @@
         cfgMgr.aWorkcodes = [[NSMutableArray alloc] init];
         [aElementsToFind addObject:@"idworkcode"];
         [aElementsToFind addObject:@"workcode"];
-        [xmlReader parseForElements:aElementsToFind:srConfigWorkcodes.webData];
+        [xmlReader parseForElements:aElementsToFind data:srConfigWorkcodes.webData];
         
         if (!bErrorSessionID) {
             OrderedDictionary *mutable = [[OrderedDictionary alloc] init];
@@ -296,10 +297,10 @@
             
             srConfigClients = [[SOAPRequester alloc] init];
             srConfigClients.delegate = self;
-            [srConfigClients sendSOAPRequest:cfgTmp:@"GetClientsForUser2":mutable];
+            [srConfigClients sendSOAPRequest:cfgTmp message:@"GetClientsForUser2" od:mutable];
         }else {
             //[CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @""): @"Error sessionid (login again)!"];
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
 
             [self abortLoginProcess];
         }
@@ -310,7 +311,7 @@
         [aElementsToFind addObject:@"idproject"];
         [aElementsToFind addObject:@"project"];
 
-        [xmlReader parseForElements:aElementsToFind:srConfig.webData];
+        [xmlReader parseForElements:aElementsToFind data:srConfig.webData];
         
         //if(!bErrorSessionID){
             OrderedDictionary *mutable = [[OrderedDictionary alloc] init];
@@ -322,7 +323,7 @@
         
             srConfigWorkcodes = [[SOAPRequester alloc] init];
             srConfigWorkcodes.delegate = self;
-            [srConfigWorkcodes sendSOAPRequest:cfgTmp:@"GetWorkcodesForUser":mutable];
+            [srConfigWorkcodes sendSOAPRequest:cfgTmp message:@"GetWorkcodesForUser" od:mutable];
         /*}else {
             [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
             [self abortLoginProcess];
@@ -334,7 +335,7 @@
         [aElementsToFind addObject:@"result"];
         [aElementsToFind addObject:@"idsession"];
         
-        [xmlReader parseForElements:aElementsToFind:sr.webData];
+        [xmlReader parseForElements:aElementsToFind data:sr.webData];
     }
 }
 
@@ -344,6 +345,7 @@
     tbiMembership.enabled = NO;
     tbiConfig.enabled = NO;
     bbiLogin.enabled = NO;
+    tbvLogin.userInteractionEnabled = false;
     //[txtMandate resignFirstResponder];
     //[txtUsername resignFirstResponder];
     //[txtPassword resignFirstResponder];
@@ -368,7 +370,7 @@
     
     sr = [[SOAPRequester alloc] init];
     sr.delegate = self;
-    [sr sendSOAPRequest:cfgTmp:@"Login2":mutable];
+    [sr sendSOAPRequest:cfgTmp message:@"Login2" od:mutable];
 }
 
 -(void)openConfig{
@@ -486,7 +488,7 @@
             sConfigType = NSLocalizedString(@"lblUser", @"");
         else //if(nID == 2)
             sConfigType = NSLocalizedString(@"lblPwd", @"");
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseEnterA", @""), sConfigType]];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseEnterA", @""), sConfigType]];
 	}else {
         if(nViewIdx == 0)
             cfgMgr.sDefaultMandate = txtNewConfigText.text; 

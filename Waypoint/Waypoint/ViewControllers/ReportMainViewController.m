@@ -233,7 +233,7 @@
     
     [actMain stopAnimating];
     cmdSelectMonth.enabled = YES;
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @""): [error description]];    
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") message:[error description]];
 }
 
 - (void) gotSOAPAnswere:(NSObject*)requester:(NSString*)sXMLAnswere:(NSData*)data{   
@@ -255,9 +255,9 @@
     xmlReader = [[XMLReader alloc] init];
     xmlReader.delegate = self;
     
-    [xmlReader parseForElements:aElementsToFind:srMinMax.webData];
+    [xmlReader parseForElements:aElementsToFind data:srMinMax.webData];
     if (bErrorSessionId) {
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @""):NSLocalizedString(@"msgSessionError", @"")];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         [actMain stopAnimating];
         cmdSelectMonth.enabled = YES;
         return;
@@ -438,7 +438,7 @@
     
     srMinMax = [[SOAPRequester alloc] init];
     srMinMax.delegate = self;
-    [srMinMax sendSOAPRequest:cfgMgr:@"GetWorkStartEnd":mutable];
+    [srMinMax sendSOAPRequest:cfgMgr message:@"GetWorkStartEnd" od:mutable];
     
     //[mutable release];
     

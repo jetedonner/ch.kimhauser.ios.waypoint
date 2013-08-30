@@ -16,11 +16,11 @@
 @synthesize conn;
 //@synthesize delegate;
 
-- (void) gotSOAPAnswere: (NSObject*)requester:(NSString*)sXMLAnswere:(NSData*)data{
+- (void) gotSOAPAnswere: (NSObject*)requester answere:(NSString*)sXMLAnswere data:(NSData*)data{
 
 }
 
-- (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error{
+- (void) errorSOAPRequest: (NSObject*)requester error:(NSError*)error{
 }
 
 - (void)setDelegate:(id)val{
@@ -30,7 +30,7 @@
 - (id)delegate{
 	return delegate;
 }
-- (void)sendSOAPRequest:(ConfigMgr*)configMgr:(NSString*)sSOAPAction:(OrderedDictionary*)od
+- (void)sendSOAPRequest:(ConfigMgr*)configMgr message:(NSString *)sSOAPAction od:(OrderedDictionary*)od
 {
     NSMutableString *soapMsg;
     
@@ -132,7 +132,7 @@
 -(void) connection:(NSURLConnection *) connection didFailWithError:(NSError *) error {
     NSLog(@"%@", [error description]);
 	//[webData release];
-    [delegate errorSOAPRequest:self :error];
+    [delegate errorSOAPRequest:self error:error];
     //[connection release];
 }
 
@@ -144,7 +144,7 @@
                         encoding:NSUTF8StringEncoding];
 
     NSLog(@"%@", theXML);
-    [delegate gotSOAPAnswere:self:theXML:webData];
+    [delegate gotSOAPAnswere:self answere:theXML data:webData];
     //[theXML release];    
 
 	

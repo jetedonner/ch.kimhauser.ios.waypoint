@@ -32,7 +32,7 @@
     editTimeSheetView = nil;
     DateHelper *dh = [[DateHelper alloc] init];
     if (bReload) {
-        [self reloadTimesheet:[dh stringFromDate:dSelectedDate :@"dd.MM.yyyy"]];
+        [self reloadTimesheet:[dh stringFromDate:dSelectedDate format:@"dd.MM.yyyy"]];
     }
 
 }
@@ -93,7 +93,7 @@
         
         [UIView animateWithDuration:0.7
                               delay:0
-                            options: UIViewAnimationCurveEaseInOut
+                            options: UIViewAnimationOptionCurveEaseOut /*UIViewAnimationCurveEaseInOut*/
                          animations:^{
                              tbvTimeSheet.frame = napkinTopFrame;
                              tbvTimeSheetLeft.frame = napkinTopFrame2;
@@ -125,14 +125,14 @@
         
         DateHelper * dh = [[DateHelper alloc] init];
         NSDate *dFrom = dSelectedDate;        
-        cmbSelectDate.titleLabel.text = [dh shortStringFromDate:[dh dateAddDay:dFrom:-1]];
-        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom:-1]] forState:UIControlStateNormal];
-        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom:-1]] forState:UIControlStateSelected];
-        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom:-1]] forState:UIControlStateHighlighted];
+        cmbSelectDate.titleLabel.text = [dh shortStringFromDate:[dh dateAddDay:dFrom days:-1]];
+        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom days:-1]] forState:UIControlStateNormal];
+        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom days:-1]] forState:UIControlStateSelected];
+        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom days:-1]] forState:UIControlStateHighlighted];
         dSelectedDate = dFrom;
         //lblUserLeft.text = [NSString stringWithFormat:@"   %@", [dh shortStringFromDate:[dh dateAddDay:dFrom:-2]]];
-        lblUserLeft.text = [dh longStringFromDate:[dh dateAddDay:dFrom:-2]];
-        [self reloadTimesheet:[[dh shortStringFromDate:[dh dateAddDay:dFrom:-2]] copy]];
+        lblUserLeft.text = [dh longStringFromDate:[dh dateAddDay:dFrom days:-2]];
+        [self reloadTimesheet:[[dh shortStringFromDate:[dh dateAddDay:dFrom days:-2]] copy]];
         //[dh release];
         
     }else{
@@ -142,7 +142,7 @@
         
         [UIView animateWithDuration:0.7
                               delay:0
-                            options: UIViewAnimationCurveEaseInOut
+                            options: UIViewAnimationOptionCurveEaseInOut /*UIViewAnimationCurveEaseInOut*/
                          animations:^{
                              tbvTimeSheet.frame = napkinTopFrame;
                              tbvTimeSheetRight.frame = napkinTopFrame2;
@@ -174,12 +174,12 @@
         
         DateHelper * dh = [[DateHelper alloc] init];
         NSDate *dFrom = [dh dateFromShortString:cmbSelectDate.titleLabel.text];
-        cmbSelectDate.titleLabel.text = [dh shortStringFromDate:[dh dateAddDay:dFrom:1]];
-        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom:1]] forState:UIControlStateNormal];
-        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom:1]] forState:UIControlStateSelected];
-        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom:1]] forState:UIControlStateHighlighted];
+        cmbSelectDate.titleLabel.text = [dh shortStringFromDate:[dh dateAddDay:dFrom days:1]];
+        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom days:1]] forState:UIControlStateNormal];
+        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom days:1]] forState:UIControlStateSelected];
+        [cmbSelectDate setTitle:[dh shortStringFromDate:[dh dateAddDay:dFrom days:1]] forState:UIControlStateHighlighted];
         
-        dSelectedDate = [dh dateAddDay:dSelectedDate:2];
+        dSelectedDate = [dh dateAddDay:dSelectedDate days:2];
         lblUserRight.text = [dh longStringFromDate:dSelectedDate];
         
         
@@ -236,7 +236,7 @@
 	[cmbSelectDate setTitle:[NSString stringWithFormat:@"%@", sTmp] forState:UIControlStateHighlighted];
 	//[self calcTimeDiff];
     DateHelper * dh = [[DateHelper alloc] init];
-    dSelectedDate = [dh dateAddDay:datePicker.date:1];
+    dSelectedDate = [dh dateAddDay:datePicker.date days:1];
 	//[df release];
     //[dh release];
 	
@@ -265,20 +265,20 @@
     DateHelper * dh = [[DateHelper alloc] init];
     NSDate *dFrom = [dh dateFromShortString:cmbSelectDate.titleLabel.text];
     
-    sWorkDateLeft = [[dh shortStringFromDateSql:[dh dateAddDay:dFrom:-1]] copy];
+    sWorkDateLeft = [[dh shortStringFromDateSql:[dh dateAddDay:dFrom days:-1]] copy];
     sWorkDate = [[dh shortStringFromDateSql:dFrom] copy];
-    sWorkDateRight = [[dh shortStringFromDateSql:[dh dateAddDay:dFrom:1]] copy];
+    sWorkDateRight = [[dh shortStringFromDateSql:[dh dateAddDay:dFrom days:1]] copy];
     sWorkDateGroup = @"";
     
     dSelectedDate = [dFrom copy];
     
     if(sDate == nil){
         sWorkDateToRequest = @"";
-        [od setObject: [dh shortStringFromDateSql:[dh dateAddDay:dFrom:-1]] forKey: @"date"];
-        [od setObject: [dh shortStringFromDateSql:[dh dateAddDay:dFrom:1]] forKey: @"date2"];
+        [od setObject: [dh shortStringFromDateSql:[dh dateAddDay:dFrom days:-1]] forKey: @"date"];
+        [od setObject: [dh shortStringFromDateSql:[dh dateAddDay:dFrom days:1]] forKey: @"date2"];
     }else{
         sWorkDateToRequest = sDate;
-        NSDate * dTmp = [dh dateFromStrings:sDate:@"dd.MM.yyyy"];
+        NSDate * dTmp = [dh dateFromStrings:sDate format:@"dd.MM.yyyy"];
         sDate = [dh shortStringFromDateSql:dTmp];
         sWorkDateToRequest = sDate;
         [od setObject: sDate forKey: @"date"];    
@@ -290,12 +290,12 @@
     //[od setObject: cmbSelectDate.titleLabel.text forKey: @"date2"];   
     srTimesheet = [[SOAPRequester alloc] init];
     srTimesheet.delegate = self;
-    [srTimesheet sendSOAPRequest:cfgMgr:@"GetTimesheet":od];
+    [srTimesheet sendSOAPRequest:cfgMgr message:@"GetTimesheet" od:od];
     
     //[od release];
 }
 
-- (void) foundXMLElement: (NSObject*)sourceXmlReader:(NSString*)sElementName:(NSMutableString*)sValue{
+- (void) foundXMLElement: (NSObject*)sourceXmlReader element:(NSString*)sElementName value:(NSMutableString*)sValue{
     /*UIAlertView *alert = [[UIAlertView alloc] 
                           initWithTitle:@"Connection Test OK!"
                           message:[NSString stringWithFormat:@"Server says: %@", sValue] 
@@ -405,12 +405,12 @@
         [self dismissModalViewControllerAnimated:YES];
 }
 
-- (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error{
+- (void) errorSOAPRequest: (NSObject*)requester error:(NSError*)error{
     [actMain stopAnimating];
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @""): [error description]];
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") message:[error description]];
 }
 
-- (void) gotSOAPAnswere:(NSObject*)requester:(NSString*)sXMLAnswere:(NSData*)data{   
+- (void) gotSOAPAnswere:(NSObject*)requester answere:(NSString*)sXMLAnswere data:(NSData*)data{
     
     if (requester == srTimesheet) {
         NSLog(@"%@", [NSString stringWithFormat:@"%@", sXMLAnswere]);
@@ -428,9 +428,9 @@
             DateHelper * dh = [[DateHelper alloc] init];
             NSDate *dFrom = [dh dateFromShortString:cmbSelectDate.titleLabel.text];
             
-            lblUserLeft.text = [[dh longStringFromDate:[dh dateAddDay:dFrom:-1]] copy];
+            lblUserLeft.text = [[dh longStringFromDate:[dh dateAddDay:dFrom days:-1]] copy];
             lblUser.text =  [[dh longStringFromDate:dFrom] copy];
-            lblUserRight.text = [[dh longStringFromDate:[dh dateAddDay:dFrom:1]] copy];
+            lblUserRight.text = [[dh longStringFromDate:[dh dateAddDay:dFrom days:1]] copy];
             //[dh release];
             
         }else{
@@ -463,10 +463,10 @@
         sWorkDateGroup = [NSString stringWithFormat:@""];
         xmlReader = [[XMLReader alloc] init];
         xmlReader.delegate = self;
-        
-        [xmlReader parseForElements:aElementsToFind:srTimesheet.webData];
+         
+        [xmlReader parseForElements:aElementsToFind data:srTimesheet.webData];
         if (bErrorSessionId) {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
             [actMain stopAnimating];  
             return;
         }
@@ -556,7 +556,7 @@
     
     XMLReader *xmlReader2 = [[XMLReader alloc] init];
     xmlReader2.delegate = self;
-    [xmlReader2 parseForElements:aElementsToFind:sr.webData];
+    [xmlReader2 parseForElements:aElementsToFind data:sr.webData];
     
     [actMain stopAnimating];
     return;
@@ -576,7 +576,7 @@
     
     sr = [[SOAPRequester alloc] init];
     sr.delegate = self;
-    [sr sendSOAPRequest:cfgTmp:@"Logout":mutable];
+    [sr sendSOAPRequest:cfgTmp message:@"Logout" od:mutable];
 }
 
 -(void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item{
@@ -818,9 +818,9 @@
     cell.tse = tse;
     
     if(!cfgMgr.bShowSeconds){
-        sHoursWorked = [[dh stringFromDate:[dh dateFromStrings:sHoursWorked :@"HH:mm:ss"]:@"HH:mm"] copy];
-        sStartTime = [[dh stringFromDate:[dh dateFromStrings:sStartTime :@"HH:mm:ss"]:@"HH:mm"] copy];
-        sEndTime = [[dh stringFromDate:[dh dateFromStrings:sEndTime :@"HH:mm:ss"]:@"HH:mm"] copy];
+        sHoursWorked = [[dh stringFromDate:[dh dateFromStrings:sHoursWorked format:@"HH:mm:ss"] format:@"HH:mm"] copy];
+        sStartTime = [[dh stringFromDate:[dh dateFromStrings:sStartTime format:@"HH:mm:ss"] format:@"HH:mm"] copy];
+        sEndTime = [[dh stringFromDate:[dh dateFromStrings:sEndTime format:@"HH:mm:ss"] format:@"HH:mm"] copy];
     }
     
 	NSString *sTimeText1 = [NSString stringWithFormat:@"%@ h", sHoursWorked];

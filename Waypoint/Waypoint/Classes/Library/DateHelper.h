@@ -16,9 +16,9 @@
 
 -(NSString*)longStringFromDate:(NSDate*)dDate;
 
--(NSDate*)dateFromStrings:(NSString*)sDate:(NSString*)sFormat;
--(NSString*)stringFromDate:(NSDate*)dDate:(NSString*)sFormat;
+-(NSDate*)dateFromStrings:(NSString*)sDate format:(NSString*)sFormat;
+-(NSString*)stringFromDate:(NSDate*)dDate format:(NSString*)sFormat;
 
--(NSDate*)dateAddDay:(NSDate*)dDate:(int)nDays;
+-(NSDate*)dateAddDay:(NSDate*)dDate days:(int)nDays;
 
 @end

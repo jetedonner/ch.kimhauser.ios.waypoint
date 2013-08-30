@@ -150,16 +150,16 @@
         if (![fileManager removeItemAtPath:plistPath2 error:&error])
         {
             NSLog(@"Could not remove old files. Error:%@",error);
-            [CommonFunctions showMessageBox:@"Error remove":error.description];
+            [CommonFunctions showMessageBox:@"Error remove" message:error.description];
         }
     }
     
     BOOL bSuccess = [fileManager copyItemAtPath:plistPath toPath:plistPath2 error:&error];
     if (bSuccess) {
         [self loadData];
-        [CommonFunctions showMessageBox:@"Success":@"Default config loaded!"];
+        [CommonFunctions showMessageBox:@"Success" message:@"Default config loaded!"];
     }else {
-        [CommonFunctions showMessageBox:@"Error copy":error.description];
+        [CommonFunctions showMessageBox:@"Error copy" message:error.description];
     }
 
 }

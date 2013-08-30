@@ -256,7 +256,7 @@
             sConfigType = NSLocalizedString(@"lblProject", @"");
         else //if(nID == 2)
             sConfigType = NSLocalizedString(@"lblWorkcode", @"");
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseEnterA", @""), sConfigType]];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseEnterA", @""), sConfigType]];
 	}else {
         int nParentID = -1;
         if (nConfigID == 0 | nConfigID == 2)
@@ -275,8 +275,8 @@
         ConfigMgr *cfgTmp = [[ConfigMgr alloc] initWithName: @""];
         
         srConfigText = [[SOAPRequester alloc] init];
-        srConfigText.delegate = self;
-        [srConfigText sendSOAPRequest:cfgTmp:@"UpdateConfigText":od];
+        srConfigText.delegate = self; 
+        [srConfigText sendSOAPRequest:cfgTmp message:@"UpdateConfigText" od:od];
 	}
 }
 
@@ -456,7 +456,7 @@
             
             srWaypoint = [[SOAPRequester alloc] init];
             srWaypoint.delegate = self;
-            [srWaypoint sendSOAPRequest:cfgTmp:@"UpdateWaypoint":od];
+            [srWaypoint sendSOAPRequest:cfgTmp message:@"UpdateWaypoint" od:od];
         }
     }else if([cmdQuick.titleLabel.text isEqualToString:NSLocalizedString(@"lblStopWorktime", @"")]){
         [timer invalidate];
@@ -477,20 +477,20 @@
 //        tbvQuick.contentSize = CGSizeMake(tbvQuick.contentSize.width, tbvQuick.contentSize.height+30);
     }else if([cmdQuick.titleLabel.text isEqualToString:NSLocalizedString(@"lblSaveWorktime", @"")]){
         if (bInvalideTime) {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titErrorInput", @"") :NSLocalizedString(@"msgTimeValueError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titErrorInput", @"") message:NSLocalizedString(@"msgTimeValueError", @"")];
             return;
         }
         
         if(sClient == nil){
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblClient", @"")]];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblClient", @"")]];
             return;
         }
         if(sProject == nil){
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblProject", @"")]];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblProject", @"")]];
             return;
         }
         if(sWorkcode == nil){
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblWorkcode", @"")]];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblWorkcode", @"")]];
             return;
         }
         // ATTENTION Return project overwrittes sProject
@@ -544,7 +544,7 @@
             
             srWaypoint = [[SOAPRequester alloc] init];
             srWaypoint.delegate = self;
-            [srWaypoint sendSOAPRequest:cfgTmp:@"UpdateWaypoint":od];
+            [srWaypoint sendSOAPRequest:cfgTmp message:@"UpdateWaypoint" od:od];
             
         }else {
             [self save:nil];
@@ -623,7 +623,7 @@
     
     sr = [[SOAPRequester alloc] init];
     sr.delegate = self;
-    [sr sendSOAPRequest:cfgTmp:@"UpdateTimesheetEntry":mutable];
+    [sr sendSOAPRequest:cfgTmp message:@"UpdateTimesheetEntry" od:mutable];
 
 }
 
@@ -771,7 +771,7 @@
 - (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error{
     
     //[actMain stopAnimating];
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") :[error description]];
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") message:[error description]];
     
 }
 
@@ -791,9 +791,9 @@
             
             xmlReader = [[XMLReader alloc] init];
             xmlReader.delegate = self;
-            [xmlReader parseForElements:aElementsToFind:srWaypoint.webData];
+            [xmlReader parseForElements:aElementsToFind data:srWaypoint.webData];
             if (bErrorSessionId) {
-                [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+                [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
             }else {
                 /*if (bEndWaypoint) {
                     [self save:nil];
@@ -811,10 +811,10 @@
         
         xmlReader = [[XMLReader alloc] init];
         xmlReader.delegate = self;
-        [xmlReader parseForElements:aElementsToFind:srConfigText.webData];
+        [xmlReader parseForElements:aElementsToFind data:srConfigText.webData];
         
         if (bErrorSessionId) {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         }
         return;
     }
@@ -824,9 +824,9 @@
         [aElementsToFind addObject:@"return"];
         xmlReader = [[XMLReader alloc] init];
         xmlReader.delegate = self;
-        [xmlReader parseForElements:aElementsToFind:sr.webData];
+        [xmlReader parseForElements:aElementsToFind data:sr.webData];
         if (bErrorSessionId) {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         }else {
             [delegate closeQuickView:0];
         }

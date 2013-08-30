@@ -261,8 +261,8 @@
         sEndAt = tse.dEndTime;
         if(!cfgMgr.bShowSeconds){
             DateHelper *dh = [[DateHelper alloc] init];
-            sStartFrom = [[dh stringFromDate:[dh dateFromStrings:sStartFrom :@"HH:mm:ss"]: @"HH:mm"] copy];
-            sEndAt = [[dh stringFromDate:[dh dateFromStrings:sEndAt :@"HH:mm:ss"]: @"HH:mm"] copy];
+            sStartFrom = [[dh stringFromDate:[dh dateFromStrings:sStartFrom format:@"HH:mm:ss"] format:@"HH:mm"] copy];
+            sEndAt = [[dh stringFromDate:[dh dateFromStrings:sEndAt format:@"HH:mm:ss"] format:@"HH:mm"] copy];
         }
         
         sProject = tse.sProject;
@@ -372,12 +372,12 @@
         
         if(indexPath.row == 0){
             bbiTitleTime.title = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"lblSelect", @"") , NSLocalizedString(@"lblStartTime", @"")];
-            NSDate *dTmp = (tse != nil ? [dh dateFromStrings:[NSString stringWithFormat:@"%@ %@", tse.sWorkdate, tse.dStartTime] :@"dd.MM.yyyy HH:mm:ss"]:  startFrom);
+            NSDate *dTmp = (tse != nil ? [dh dateFromStrings:[NSString stringWithFormat:@"%@ %@", tse.sWorkdate, tse.dStartTime] format:@"dd.MM.yyyy HH:mm:ss"]:  startFrom);
             timePicker.date = dTmp;
             nTimeMode = 0;
         }else if(indexPath.row == 2){
             bbiTitleTime.title = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"lblSelect", @"") , NSLocalizedString(@"lblEndTime", @"")];
-            NSDate *dTmp = (tse != nil ? [dh dateFromStrings:[NSString stringWithFormat:@"%@ %@", tse.sWorkdate, tse.dEndTime] :@"dd.MM.yyyy HH:mm:ss"]:  endAt);
+            NSDate *dTmp = (tse != nil ? [dh dateFromStrings:[NSString stringWithFormat:@"%@ %@", tse.sWorkdate, tse.dEndTime] format:@"dd.MM.yyyy HH:mm:ss"]:  endAt);
             timePicker.date = dTmp;
             nTimeMode = 1;
         }
@@ -508,7 +508,7 @@
         [textView becomeFirstResponder];        
         
     }else if (indexPath.section == 4) {
-        [CommonFunctions showYesNoBox:@"Delete?" :@"In Delete Function!": self];
+        [CommonFunctions showYesNoBox:@"Delete?" message:@"In Delete Function!" delegate:self];
     }
 }
 
@@ -543,8 +543,8 @@
         ConfigMgr *cfgTmp = [[ConfigMgr alloc] initWithName: @""];
         
         srDelete = [[SOAPRequester alloc] init];
-        srDelete.delegate = self;
-        [srDelete sendSOAPRequest:cfgTmp:@"DeleteTimesheetEntry":mutable];
+        srDelete.delegate = self; 
+        [srDelete sendSOAPRequest:cfgTmp message:@"DeleteTimesheetEntry" od:mutable];
     }
 }
 
@@ -683,20 +683,20 @@
 - (IBAction) save:(id)sender{
     
     if (bInvalideTime) {
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titErrorInput", @"") :NSLocalizedString(@"msgTimeValueError", @"")];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titErrorInput", @"") message:NSLocalizedString(@"msgTimeValueError", @"")];
         return;
     }
     
     if(sClient == nil){
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblClient", @"")]];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblClient", @"")]];
         return;
     }
     if(sProject == nil){
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblProject", @"")]];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblProject", @"")]];
         return;
     }
     if(sWorkcode == nil){
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblWorkcode", @"")]];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseSelectA", @""), NSLocalizedString(@"lblWorkcode", @"")]];
         return;
     }
     
@@ -742,10 +742,10 @@
 	[df3 setDateFormat:@"HH:mm:ss"];//ss
     
     DateHelper *dh = [[DateHelper alloc] init];
-    NSString *sTmp = [NSString stringWithFormat:@"%@ %@", (tse != nil ? tse.sWorkdate :[dh stringFromDate:dSelectedDate:@"dd.MM.yyyy"]), (tse != nil ? tse.dStartTime : [df3 stringFromDate: startFrom])];
+    NSString *sTmp = [NSString stringWithFormat:@"%@ %@", (tse != nil ? tse.sWorkdate :[dh stringFromDate:dSelectedDate format:@"dd.MM.yyyy"]), (tse != nil ? tse.dStartTime : [df3 stringFromDate: startFrom])];
     NSDate * dTmp = [df dateFromString:sTmp];
     
-    NSString *sTmp2 = [NSString stringWithFormat:@"%@ %@", (tse != nil ? tse.sWorkdate : [dh stringFromDate:dSelectedDate:@"dd.MM.yyyy"]), (tse != nil ? tse.dEndTime : [df3 stringFromDate:endAt])];
+    NSString *sTmp2 = [NSString stringWithFormat:@"%@ %@", (tse != nil ? tse.sWorkdate : [dh stringFromDate:dSelectedDate format:@"dd.MM.yyyy"]), (tse != nil ? tse.dEndTime : [df3 stringFromDate:endAt])];
     NSDate * dTmp2 = [df dateFromString:sTmp2];
     
 	//[self closeView];
@@ -770,7 +770,7 @@
     
     sr = [[SOAPRequester alloc] init];
     sr.delegate = self;
-    [sr sendSOAPRequest:cfgTmp:@"UpdateTimesheetEntry":mutable];
+    [sr sendSOAPRequest:cfgTmp message:@"UpdateTimesheetEntry" od:mutable];
 }
 
 - (void)setDelegate:(id)val{
@@ -884,7 +884,7 @@
 - (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error{
     
     //[actMain stopAnimating];
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") :[error description]];
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") message:[error description]];
 }
 
 - (void) gotSOAPAnswere:(NSObject*)requester:(NSString*)sXMLAnswere:(NSData*)data{   
@@ -898,9 +898,9 @@
         
         xmlReaderConfig = [[XMLReader alloc] init];
         xmlReaderConfig.delegate = self;
-        [xmlReaderConfig parseForElements:aElementsToFind:srDelete.webData];
+        [xmlReaderConfig parseForElements:aElementsToFind data:srDelete.webData];
         if (bErrorSessionId) {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         }else {
             [self dismissModalViewControllerAnimated:YES];
             [delegate closeEditTimeSheetView:TRUE];
@@ -913,9 +913,9 @@
         
         xmlReaderConfig = [[XMLReader alloc] init];
         xmlReaderConfig.delegate = self;
-        [xmlReaderConfig parseForElements:aElementsToFind:srConfigText.webData];
+        [xmlReaderConfig parseForElements:aElementsToFind data:srConfigText.webData];
         if (bErrorSessionId) {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         }
         return;
     }
@@ -925,10 +925,10 @@
     
     xmlReader = [[XMLReader alloc] init];
     xmlReader.delegate = self;
-    
-    [xmlReader parseForElements:aElementsToFind:sr.webData];
+     
+    [xmlReader parseForElements:aElementsToFind data:sr.webData];
     if (bErrorSessionId) {
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
     }else {
         [self dismissModalViewControllerAnimated:YES];
         [delegate closeEditTimeSheetView:TRUE];
@@ -969,7 +969,7 @@
             sConfigType = NSLocalizedString(@"lblProject", @"");
         else //if(nID == 2)
             sConfigType = NSLocalizedString(@"lblWorkcode", @"");
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseEnterA", @""), sConfigType]];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseEnterA", @""), sConfigType]];
 	}else {
         int nParentID = -1;
         if(nConfigID == 1)
@@ -988,7 +988,7 @@
         
         srConfigText = [[SOAPRequester alloc] init];
         srConfigText.delegate = self;
-        [srConfigText sendSOAPRequest:cfgTmp:@"UpdateConfigText":od];
+        [srConfigText sendSOAPRequest:cfgTmp message:@"UpdateConfigText" od:od];
 	}
 }
 
@@ -1040,7 +1040,7 @@
 
     }else {
         DateHelper *dh = [[DateHelper alloc] init];
-        niTitle.title = [NSString stringWithFormat:@"%@ (New)", [dh stringFromDate:dSelectedDate:@"dd.MM.yyyy"]];
+        niTitle.title = [NSString stringWithFormat:@"%@ (New)", [dh stringFromDate:dSelectedDate format:@"dd.MM.yyyy"]];
     }
 }
 

@@ -115,7 +115,7 @@
     
     sr = [[SOAPRequester alloc] init];
     sr.delegate = self;
-    [sr sendSOAPRequest:cfgTmp:@"HelloWorld":od];
+    [sr sendSOAPRequest: cfgTmp message:@"HelloWorld" od:od];
 }
 
 - (void)setDelegate:(id)val{
@@ -123,12 +123,12 @@
 }
 
 - (void) foundXMLElement: (NSObject*)sourceXmlReader:(NSString*)sElementName:(NSMutableString*)sValue{
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionOk", @""):[NSString stringWithFormat:NSLocalizedString(@"msgConnectionTest", @""), sValue]];
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionOk", @"") message:[NSString stringWithFormat:NSLocalizedString(@"msgConnectionTest", @""), sValue]];
 }
 
 - (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error{
     [actMain stopAnimating];
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @""): [error description]];
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") message:[error description]];
 }
 
 - (void) gotSOAPAnswere:(NSObject*)requester:(NSString*)sXMLAnswere:(NSData*)data{   
@@ -141,7 +141,7 @@
     XMLReader *xmlReader = [[XMLReader alloc] init];
     xmlReader.delegate = self;
     //sr.delegate = self;
-    [xmlReader parseForElements:aElementsToFind:sr.webData];
+    [xmlReader parseForElements:aElementsToFind data:sr.webData];
     
     //[aElementsToFind release];
     [actMain stopAnimating];

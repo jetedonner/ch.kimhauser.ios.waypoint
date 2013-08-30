@@ -54,7 +54,7 @@
     return sTmp;
 }
 
--(NSDate*)dateFromStrings:(NSString*)sDate:(NSString*)sFormat{
+-(NSDate*)dateFromStrings:(NSString*)sDate format:(NSString*)sFormat{
     NSDateFormatter * df = [[NSDateFormatter alloc] init];
     [df setDateFormat:sFormat];
     [df setTimeZone:[NSTimeZone systemTimeZone]];
@@ -66,7 +66,7 @@
     return dFrom;
 }
 
--(NSString*)stringFromDate:(NSDate*)dDate:(NSString*)sFormat{
+-(NSString*)stringFromDate:(NSDate*)dDate format:(NSString*)sFormat{
     NSDateFormatter * df = [[NSDateFormatter alloc] init];
     [df setDateFormat:sFormat];
     [df setTimeZone:[NSTimeZone systemTimeZone]];
@@ -77,7 +77,7 @@
     return sTmp;
 }
 
--(NSDate*)dateAddDay:(NSDate*)dDate:(int)nDays{
+-(NSDate*)dateAddDay:(NSDate*)dDate days:(int)nDays{
     //return [dDate addTimeInterval:60*60*24*nDays];
     //NSTimeInterval *ti = [[NSTimeI]]
     NSTimeInterval delta = 60*60*24*nDays;

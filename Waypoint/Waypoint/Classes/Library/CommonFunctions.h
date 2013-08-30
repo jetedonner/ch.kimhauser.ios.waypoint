@@ -10,7 +10,7 @@
 
 @interface CommonFunctions : NSObject
 
-+ (void)showMessageBox:(NSString*)sTitle:(NSString*)sMsg;
-+ (void)showYesNoBox:(NSString*)sTitle:(NSString*)sMsg:(id)msgDelegate;
++ (void)showMessageBox:(NSString*)sTitle message:(NSString*)sMsg;
++ (void)showYesNoBox:(NSString*)sTitle message:(NSString*)sMsg delegate:(id)msgDelegate;
 + (NSString*)stringByReplaceEmDash:(NSString*)sSource;
 @end

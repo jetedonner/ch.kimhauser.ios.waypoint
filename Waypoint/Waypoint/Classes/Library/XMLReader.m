@@ -22,7 +22,7 @@
 	return delegate;
 }
 
-- (void) parseForElements:(NSMutableArray*)aElements:(NSData*)data{
+- (void) parseForElements:(NSMutableArray*)aElements data:(NSData*)data{
     //NSLog(theXML);
     self.aElementsToFind = aElements;
 	xmlParser = [[NSXMLParser alloc] initWithData:data];
@@ -66,7 +66,7 @@ qualifiedName:(NSString *)qName
     for (NSString *str in aElementsToFind) {
         //NSLog(str);s
         if( [elementName isEqualToString:str]) {
-            [delegate foundXMLElement:self :elementName :soapResults];
+            [delegate foundXMLElement:self element:elementName value:soapResults];
             
             [soapResults setString:@""];
             elementFound = FALSE;

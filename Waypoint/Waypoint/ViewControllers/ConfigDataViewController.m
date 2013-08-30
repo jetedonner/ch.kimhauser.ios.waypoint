@@ -67,7 +67,7 @@
             }else if (nRet == -1) {
                 bErrorSessionId = TRUE;
             }else if (nRet == -2) {
-                [CommonFunctions showMessageBox:NSLocalizedString(@"titDeleteError", @"") :NSLocalizedString(@"msgDeleteError", @"")];
+                [CommonFunctions showMessageBox:NSLocalizedString(@"titDeleteError", @"") message:NSLocalizedString(@"msgDeleteError", @"")];
             }
         }
     }else if (sourceXmlReader == xmlReader) {
@@ -132,7 +132,7 @@
 - (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error{
     
     [actMain stopAnimating];
-    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") :[error description]];
+    [CommonFunctions showMessageBox:NSLocalizedString(@"titConncetionError", @"") message:[error description]];
     
 }
 
@@ -145,10 +145,10 @@
         
         xmlReader = [[XMLReader alloc] init];
         xmlReader.delegate = self;
-        [xmlReader parseForElements:aElementsToFind:srConfigText.webData];
+        [xmlReader parseForElements:aElementsToFind data:srConfigText.webData];
         
         if (bErrorSessionId) {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         }
         [actMain stopAnimating];
         return;
@@ -164,9 +164,9 @@
         [aElementsToFind addObject:@"return"];
         xmlReaderDelete = [[XMLReader alloc] init];
         xmlReaderDelete.delegate = self;
-        [xmlReaderDelete parseForElements:aElementsToFind:srDeleteConfigText.webData];
+        [xmlReaderDelete parseForElements:aElementsToFind data:srDeleteConfigText.webData];
         if (bErrorSessionId) {
-            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") :NSLocalizedString(@"msgSessionError", @"")];
+            [CommonFunctions showMessageBox:NSLocalizedString(@"titSessionError", @"") message:NSLocalizedString(@"msgSessionError", @"")];
         }else {
             //[delegate closeQuickView:0];
         }
@@ -279,7 +279,7 @@
             sConfigType = NSLocalizedString(@"lblWorkcode", @"");
         else //if(nID == 2)
             sConfigType = NSLocalizedString(@"lblProject", @"");
-        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") :[NSString stringWithFormat: NSLocalizedString(@"msgPleaseEnterA", @""), sConfigType]];
+        [CommonFunctions showMessageBox:NSLocalizedString(@"titMissingInput", @"") message:[NSString stringWithFormat: NSLocalizedString(@"msgPleaseEnterA", @""), sConfigType]];
 	}else {
         [actMain startAnimating];
         OrderedDictionary *od = [[OrderedDictionary alloc] init];
@@ -301,7 +301,7 @@
         
         srConfigText = [[SOAPRequester alloc] init];
         srConfigText.delegate = self;
-        [srConfigText sendSOAPRequest:cfgTmp:@"UpdateConfigText":od];
+        [srConfigText sendSOAPRequest:cfgTmp message:@"UpdateConfigText" od:od];
         /*if(nViewIdx == 0)
             cfgMgr.sDefaultMandate = txtNewConfigText.text; 
         else if(nViewIdx == 1)
@@ -627,7 +627,7 @@
         
         srDeleteConfigText = [[SOAPRequester alloc] init];
         srDeleteConfigText.delegate = self;
-        [srDeleteConfigText sendSOAPRequest:cfgTmp:@"DeleteConfigText":od];
+        [srDeleteConfigText sendSOAPRequest:cfgTmp message:@"DeleteConfigText" od:od];
     }    
 }
 

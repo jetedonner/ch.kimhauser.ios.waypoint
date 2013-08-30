@@ -11,8 +11,8 @@
 #import "OrderedDictionary.h"
 
 @protocol SOAPRequesterDelegate
-- (void) gotSOAPAnswere: (NSObject*)requester:(NSString*)sXMLAnswere:(NSData*)data;
-- (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error;
+- (void) gotSOAPAnswere:(NSObject*)requester answere:(NSString*)sXMLAnswere data:(NSData*)data;
+- (void) errorSOAPRequest:(NSObject*)requester error:(NSError*)error;
 @end
 
 @interface SOAPRequester : NSObject<SOAPRequesterDelegate> {
@@ -33,9 +33,9 @@
 @property (nonatomic, retain) NSMutableString *soapResults;
 @property (nonatomic, retain) NSURLConnection *conn;
 
-- (void) gotSOAPAnswere: (NSObject*)requester:(NSString*)sXMLAnswere:(NSData*)data;
-- (void) errorSOAPRequest: (NSObject*)requester:(NSError*)error;
-- (void)sendSOAPRequest:(ConfigMgr*)configMgr:(NSString*)sSOAPAction:(OrderedDictionary*)od;
+- (void) gotSOAPAnswere: (NSObject*)requester answere:(NSString*)sXMLAnswere data:(NSData*)data;
+- (void) errorSOAPRequest: (NSObject*)requester error:(NSError*)error;
+- (void)sendSOAPRequest:(ConfigMgr*)configMgr message:(NSString*)sSOAPAction od:(OrderedDictionary*)od;
 - (void)setDelegate:(id)val;
 
 @end
