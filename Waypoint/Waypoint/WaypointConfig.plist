@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ServerName</key>
+	<string>waypoint.kimhauser.ch</string>
+	<key>ServiceName</key>
+	<string>/index.php</string>
+	<key>StayLoggedIn</key>
+	<string>FALSE</string>
+	<key>ShowDebugInfo</key>
+	<string>FALSE</string>
+	<key>ShowQuickView</key>
+	<string>FALSE</string>
+	<key>ShowSeconds</key>
+	<string>TRUE</string>
+	<key>UseGeoFencing</key>
+	<string>TRUE</string>
+	<key>DefaultMandate</key>
+	<string>demo mandate</string>
+	<key>DefaultUser</key>
+	<string>demo user</string>
+	<key>DefaultPassword</key>
+	<string>planb</string>
+</dict>
+</plist>
